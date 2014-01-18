@@ -3,6 +3,14 @@ use warnings;
 use tests::Algorithm::Diff;
 use File::Temp 'tempfile';
 use Fcntl qw(SEEK_SET SEEK_CUR);
+use Term::ANSIColor qw(:constants);
+$Term::ANSIColor::AUTORESET = 1;
+
+if ($verdict eq 'PASS') {
+    print STDOUT GREEN "pass $test\n";
+} else {
+    print STDOUT RED "FAIL $test\n";
+}
 
 sub fail;
 sub pass;
