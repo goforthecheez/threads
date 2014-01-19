@@ -59,8 +59,8 @@ static unsigned thread_ticks;   /* # of timer ticks since last yield. */
    Controlled by kernel command-line option "-o mlfqs". */
 bool thread_mlfqs;
 
+void try_to_wake_up (struct thread *, void *unused);
 static void kernel_thread (thread_func *, void *aux);
-
 static void idle (void *aux UNUSED);
 static struct thread *running_thread (void);
 static struct thread *next_thread_to_run (void);
@@ -134,9 +134,24 @@ thread_tick (void)
   else
     kernel_ticks++;
 
+  /* Decide if sleeping threads should wake up. */
+  thread_foreach (try_to_wake_up, NULL);
+
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
+}
+
+/* On each timer tick, wakes up all sleeping threads, to allow them
+   to decide if they should wake up. */
+void
+try_to_wake_up (struct thread *t, void *unused)
+{
+  if (t->wake_up_time && timer_ticks () >= t->wake_up_time)
+    {
+      t->wake_up_time = 0;
+      thread_unblock (t);
+    }
 }
 
 /* Prints thread statistics. */
@@ -182,6 +197,7 @@ thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
+  t->wake_up_time = 0;
 
   /* Stack frame for kernel_thread(). */
   kf = alloc_frame (t, sizeof *kf);
