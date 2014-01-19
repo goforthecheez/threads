@@ -1,0 +1,43 @@
+commit e45eebfe00fa425164e8f31d35a1300247924778
+Merge: 90244db d9e153b
+Author: Adeline Wong <adelinew@alumni.stanford.edu>
+Date:   Sat Jan 18 16:01:53 2014 -0800
+
+    Merge branch 'master' of https://github.com/goforthecheez/threads
+
+commit 90244dbcde1f08ca37a7ce1dd852ef3b33a88d09
+Author: Adeline Wong <adelinew@alumni.stanford.edu>
+Date:   Sat Jan 18 15:05:13 2014 -0800
+
+    Added DESIGNDOC and fixed formatting.
+
+commit d9e153bb8ecaa15bd2bf09c83ae8959d8ceba097
+Merge: a614132 ba708cc
+Author: Adeline Wong <adelinew@alumni.stanford.edu>
+Date:   Sat Jan 18 15:55:18 2014 -0800
+
+    Merge branch 'master' of https://github.com/goforthecheez/threads
+
+commit a614132e6f307fa6d446cedb7a8933f22803150c
+Author: Adeline Wong <adelinew@alumni.stanford.edu>
+Date:   Sat Jan 18 15:51:34 2014 -0800
+
+    Added colors to tests/tests.pm
+
+commit ba708ccd4fa87b5075050f3a17dbbf218f6701c8
+Author: Adeline Wong <adelinew@alumni.stanford.edu>
+Date:   Sat Jan 18 15:05:13 2014 -0800
+
+    Added DESIGNDOC and fixed formatting.
+
+commit 03ab6ad58315aa0e0380b6a1646839ffcaacdc9c
+Author: Adeline Wong <adelinew@alumni.stanford.edu>
+Date:   Wed Jan 15 08:25:30 2014 -0800
+
+    Copying over Pintos starter code.
+
+commit 502f98addf06f6a16d8217346f0634ff2f8ef463
+Author: goforthecheez <goforthecheez@gmail.com>
+Date:   Wed Jan 15 08:15:06 2014 -0800
+
+    Initial commit
