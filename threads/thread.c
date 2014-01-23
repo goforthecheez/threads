@@ -538,7 +538,6 @@ next_thread_to_run (void)
            e = list_next (e))
         {
           struct thread *t = list_entry (e, struct thread, elem);
-          ASSERT (is_thread (t));
 
           if (thread_get_priority_helper (t) >= ps.max_pri)
             {
@@ -547,13 +546,8 @@ next_thread_to_run (void)
             }
         }
 
-      ASSERT (is_thread(ps.max_pri_t));
       list_remove (&ps.max_pri_t->elem);
-      struct thread *t = list_entry (&ps.max_pri_t->elem, struct thread, elem);
-      ASSERT (t != NULL);
-      ASSERT (is_thread(t));
-
-      return t;
+      return list_entry (&ps.max_pri_t->elem, struct thread, elem);
     }
 }
 
