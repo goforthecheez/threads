@@ -45,6 +45,12 @@ struct kernel_thread_frame
     void *aux;                  /* Auxiliary data for function. */
   };
 
+struct priority_struct
+  {
+    int max_pri;
+    struct thread *max_pri_t;
+  };
+
 /* Statistics. */
 static long long idle_ticks;    /* # of timer ticks spent idle. */
 static long long kernel_ticks;  /* # of timer ticks in kernel threads. */
@@ -60,6 +66,7 @@ static unsigned thread_ticks;   /* # of timer ticks since last yield. */
 bool thread_mlfqs;
 
 void try_to_wake_up (struct thread *, void *aux UNUSED);
+int thread_get_priority_helper (struct thread *t);
 static void kernel_thread (thread_func *, void *aux);
 static void idle (void *aux UNUSED);
 static struct thread *running_thread (void);
@@ -350,14 +357,14 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
-  /*  struct thread *t = thread_current ();
+  struct thread *t = thread_current ();
 
   int old_priority = t->priority;
   t->priority = new_priority;
 
   if (new_priority < old_priority)
-  thread_yield ();*/
-  thread_current ()->priority = new_priority;
+    thread_yield ();
+  //thread_current ()->priority = new_priority;
 }
 
 /* Returns the current thread's priority. */
@@ -505,6 +512,11 @@ alloc_frame (struct thread *t, size_t size)
   return t->stack;
 }
 
+int thread_get_priority_helper (struct thread *t)
+{
+  return t->priority;
+}
+
 /* Chooses and returns the next thread to be scheduled.  Should
    return a thread from the run queue, unless the run queue is
    empty.  (If the running thread can continue running, then it
@@ -516,7 +528,33 @@ next_thread_to_run (void)
   if (list_empty (&ready_list))
     return idle_thread;
   else
-    return list_entry (list_pop_front (&ready_list), struct thread, elem);
+    {
+      struct list_elem *e;
+      struct priority_struct ps;
+      ps.max_pri = 0;
+      ps.max_pri_t = NULL;
+
+      for (e = list_begin (&ready_list); e != list_end (&ready_list);
+           e = list_next (e))
+        {
+          struct thread *t = list_entry (e, struct thread, elem);
+          ASSERT (is_thread (t));
+
+          if (thread_get_priority_helper (t) >= ps.max_pri)
+            {
+              ps.max_pri = thread_get_priority_helper (t);
+              ps.max_pri_t = t;
+            }
+        }
+
+      ASSERT (is_thread(ps.max_pri_t));
+      list_remove (&ps.max_pri_t->elem);
+      struct thread *t = list_entry (&ps.max_pri_t->elem, struct thread, elem);
+      ASSERT (t != NULL);
+      ASSERT (is_thread(t));
+
+      return t;
+    }
 }
 
 /* Completes a thread switch by activating the new thread's page
