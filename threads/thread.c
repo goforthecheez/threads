@@ -59,7 +59,7 @@ static unsigned thread_ticks;   /* # of timer ticks since last yield. */
    Controlled by kernel command-line option "-o mlfqs". */
 bool thread_mlfqs;
 
-void try_to_wake_up (struct thread *, void *unused);
+void try_to_wake_up (struct thread *, void *aux UNUSED);
 static void kernel_thread (thread_func *, void *aux);
 static void idle (void *aux UNUSED);
 static struct thread *running_thread (void);
@@ -145,7 +145,7 @@ thread_tick (void)
 /* On each timer tick, wakes up all sleeping threads, to allow them
    to decide if they should wake up. */
 void
-try_to_wake_up (struct thread *t, void *unused)
+try_to_wake_up (struct thread *t, void *aux UNUSED)
 {
   if (t->wake_up_time && timer_ticks () >= t->wake_up_time)
     {
