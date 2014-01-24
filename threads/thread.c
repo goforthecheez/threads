@@ -4,6 +4,7 @@
 #include <random.h>
 #include <stdio.h>
 #include <string.h>
+#include "devices/timer.h"
 #include "threads/flags.h"
 #include "threads/interrupt.h"
 #include "threads/intr-stubs.h"
@@ -515,7 +516,20 @@ alloc_frame (struct thread *t, size_t size)
 
 int thread_get_priority_helper (struct thread *t)
 {
-  return t->priority;
+  struct list_elem *e;
+  struct list_elem *f;
+  int max_priority = t->priority;
+
+  for (e = list_begin (&t->my_locks); e != list_end (&t->my_locks);
+       e = list_next (e))
+    {
+      ASSERT (!list_empty (&t->my_locks));
+      struct lock *lock = list_entry (e, struct lock, lockelem);
+      ASSERT (lock->holder != NULL);
+      ASSERT (is_thread (lock->holder));
+    }
+
+  return max_priority;
 }
 
 /* Chooses and returns the next thread to be scheduled.  Should
