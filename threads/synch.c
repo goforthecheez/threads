@@ -123,9 +123,10 @@ sema_up (struct semaphore *sema)
            e = list_next (e))
         {
           struct thread *t = list_entry (e, struct thread, elem);
-          if (t->priority > max_priority)
+          int pri = thread_get_priority_helper (t);
+          if (pri > max_priority)
             {
-              max_priority = t->priority;
+              max_priority = pri;
               max_pri_t = t;
             }
 	}
@@ -135,6 +136,7 @@ sema_up (struct semaphore *sema)
     }
   sema->value++;
   intr_set_level (old_level);
+  thread_yield ();
 }
 
 static void sema_test_helper (void *sema_);
@@ -264,7 +266,6 @@ lock_release (struct lock *lock)
   lock->holder = NULL;
   sema_up (&lock->semaphore);
   intr_set_level (old_level);
-  thread_yield ();
 }
 
 /* Returns true if the current thread holds LOCK, false
