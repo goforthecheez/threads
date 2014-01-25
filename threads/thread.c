@@ -533,8 +533,9 @@ int thread_get_priority_helper (struct thread *t)
         {
           struct thread *tt = list_entry (f, struct thread, elem);
 
-          if (tt->priority > max_priority)
-            max_priority = tt->priority;
+          int pri = thread_get_priority_helper (tt);
+          if (pri > max_priority)
+            max_priority = pri;
         }
     }
 
