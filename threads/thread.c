@@ -223,6 +223,7 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
+  thread_yield ();
 
   return tid;
 }
@@ -365,14 +366,13 @@ thread_set_priority (int new_priority)
 
   if (new_priority < old_priority)
     thread_yield ();
-  //thread_current ()->priority = new_priority;
 }
 
 /* Returns the current thread's priority. */
 int
 thread_get_priority (void) 
 {
-  return thread_current ()->priority;
+  return thread_get_priority_helper (thread_current ());
 }
 
 /* Sets the current thread's nice value to NICE. */
@@ -520,14 +520,25 @@ int thread_get_priority_helper (struct thread *t)
   struct list_elem *f;
   int max_priority = t->priority;
 
+  enum intr_level old_level = intr_disable ();
+
   for (e = list_begin (&t->my_locks); e != list_end (&t->my_locks);
        e = list_next (e))
     {
-      ASSERT (!list_empty (&t->my_locks));
       struct lock *lock = list_entry (e, struct lock, lockelem);
-      ASSERT (lock->holder != NULL);
-      ASSERT (is_thread (lock->holder));
+
+      for (f = list_begin (&lock->semaphore.waiters);
+           f != list_end (&lock->semaphore.waiters);
+           f = list_next (f))
+        {
+          struct thread *tt = list_entry (f, struct thread, elem);
+
+          if (tt->priority > max_priority)
+            max_priority = tt->priority;
+        }
     }
+
+  intr_set_level (old_level);
 
   return max_priority;
 }
@@ -544,9 +555,10 @@ next_thread_to_run (void)
     return idle_thread;
   else
     {
+      enum intr_level old_level = intr_disable ();
       struct list_elem *e;
       struct priority_struct ps;
-      ps.max_pri = 0;
+      ps.max_pri = -1;
       ps.max_pri_t = NULL;
 
       for (e = list_begin (&ready_list); e != list_end (&ready_list);
@@ -554,7 +566,7 @@ next_thread_to_run (void)
         {
           struct thread *t = list_entry (e, struct thread, elem);
 
-          if (thread_get_priority_helper (t) >= ps.max_pri)
+          if (thread_get_priority_helper (t) > ps.max_pri)
             {
               ps.max_pri = thread_get_priority_helper (t);
               ps.max_pri_t = t;
@@ -562,6 +574,7 @@ next_thread_to_run (void)
         }
 
       list_remove (&ps.max_pri_t->elem);
+      intr_set_level (old_level);
       return list_entry (&ps.max_pri_t->elem, struct thread, elem);
     }
 }
