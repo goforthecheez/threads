@@ -67,7 +67,6 @@ static unsigned thread_ticks;   /* # of timer ticks since last yield. */
 bool thread_mlfqs;
 
 void try_to_wake_up (struct thread *, void *aux UNUSED);
-int thread_get_priority_helper (struct thread *t);
 static void kernel_thread (thread_func *, void *aux);
 static void idle (void *aux UNUSED);
 static struct thread *running_thread (void);
