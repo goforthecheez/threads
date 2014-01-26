@@ -91,6 +91,7 @@ struct thread
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
     int64_t wake_up_time;               /* Past this time, wake up. */
+    int my_nice;                        /* Thread's nice value. */
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */

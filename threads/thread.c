@@ -385,8 +385,7 @@ thread_set_nice (int nice UNUSED)
 int
 thread_get_nice (void) 
 {
-  /* Not yet implemented. */
-  return 0;
+  return thread_current ()->my_nice;
 }
 
 /* Returns 100 times the system load average. */
@@ -494,6 +493,10 @@ init_thread (struct thread *t, const char *name, int priority)
   t->magic = THREAD_MAGIC;
   t->wake_up_time = 0;
   list_init (&t->my_locks);
+  if (strcmp (name, "main") == 0)
+    t->my_nice = 0;
+  else
+    t->my_nice = thread_current ()->my_nice;
 
   old_level = intr_disable ();
   list_push_back (&all_list, &t->allelem);
