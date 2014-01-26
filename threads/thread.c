@@ -25,6 +25,8 @@
    that are ready to run but not actually running. */
 static struct list ready_list;
 
+static struct list ready_lists[PRI_MAX - PRI_MIN + 1];
+
 /* List of all processes.  Processes are added to this list
    when they are first scheduled and removed when they exit. */
 static struct list all_list;
@@ -71,6 +73,8 @@ static void kernel_thread (thread_func *, void *aux);
 static void idle (void *aux UNUSED);
 static struct thread *running_thread (void);
 static struct thread *next_thread_to_run (void);
+static struct thread *mlfqs_next_thread_to_run (void);
+static struct thread *priority_donation_next_thread_to_run (void);
 static void init_thread (struct thread *, const char *name, int priority);
 static bool is_thread (struct thread *) UNUSED;
 static void *alloc_frame (struct thread *, size_t size);
@@ -98,6 +102,9 @@ thread_init (void)
 
   lock_init (&tid_lock);
   list_init (&ready_list);
+  int i;
+  for (i = PRI_MIN; i < PRI_MAX; i++)
+    list_init (&ready_lists[i]);
   list_init (&all_list);
 
   /* Set up a thread structure for the running thread. */
@@ -260,7 +267,10 @@ thread_unblock (struct thread *t)
 
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  list_push_back (&ready_list, &t->elem);
+  if (thread_mlfqs)
+    list_push_back (&ready_lists[t->priority], &t->elem);
+  else
+    list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
   intr_set_level (old_level);
 }
@@ -330,8 +340,13 @@ thread_yield (void)
   ASSERT (!intr_context ());
 
   old_level = intr_disable ();
-  if (cur != idle_thread) 
-    list_push_back (&ready_list, &cur->elem);
+  if (cur != idle_thread)
+    {
+      if (thread_mlfqs)
+        list_push_back (&ready_lists[cur->priority], &cur->elem);
+      else
+        list_push_back (&ready_list, &cur->elem);
+    }
   cur->status = THREAD_READY;
   schedule ();
   intr_set_level (old_level);
@@ -378,7 +393,12 @@ thread_get_priority (void)
 void
 thread_set_nice (int nice UNUSED) 
 {
-  /* Not yet implemented. */
+  /*  enum intr_level old_level = intr_disable ();
+
+  thread_current ()->my_nice = nice;
+  thread_get_priority ();
+
+  intr_set_level (old_level);*/
 }
 
 /* Returns the current thread's nice value. */
@@ -489,14 +509,20 @@ init_thread (struct thread *t, const char *name, int priority)
   t->status = THREAD_BLOCKED;
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
-  t->priority = priority;
+  if (thread_mlfqs)
+    t->priority = PRI_DEFAULT;
+  else
+    t->priority = priority;
   t->magic = THREAD_MAGIC;
   t->wake_up_time = 0;
   list_init (&t->my_locks);
-  if (strcmp (name, "main") == 0)
-    t->my_nice = 0;
-  else
-    t->my_nice = thread_current ()->my_nice;
+  if (thread_mlfqs)
+    {
+      if (strcmp (name, "main") == 0)
+        t->my_nice = 0;
+      else
+        t->my_nice = thread_current ()->my_nice;
+    }
 
   old_level = intr_disable ();
   list_push_back (&all_list, &t->allelem);
@@ -554,11 +580,33 @@ int thread_get_priority_helper (struct thread *t)
 static struct thread *
 next_thread_to_run (void) 
 {
+  if (thread_mlfqs)
+    return mlfqs_next_thread_to_run ();
+  else
+    return priority_donation_next_thread_to_run ();
+}
+
+static struct thread *
+mlfqs_next_thread_to_run (void)
+{
+  int i;
+  for (i = PRI_MAX; i >= PRI_MIN; i--)
+    {
+      if (!list_empty (&ready_lists[i]))
+        if (list_front (&ready_lists[i]) != NULL)
+          return list_entry (list_pop_front (&ready_lists[i]),
+                             struct thread, elem);
+    }
+  return idle_thread;
+}
+
+static struct thread *
+priority_donation_next_thread_to_run (void)
+{
   if (list_empty (&ready_list))
     return idle_thread;
   else
     {
-      enum intr_level old_level = intr_disable ();
       struct list_elem *e;
       struct priority_struct ps;
       ps.max_pri = -1;
@@ -577,7 +625,6 @@ next_thread_to_run (void)
         }
 
       list_remove (&ps.max_pri_t->elem);
-      intr_set_level (old_level);
       return list_entry (&ps.max_pri_t->elem, struct thread, elem);
     }
 }
