@@ -1,3 +1,5 @@
+#include "threads/fixed-point.h"
+#include <stddef.h>
 #include <stdint.h>
 
 #define F 16384     // 2**14

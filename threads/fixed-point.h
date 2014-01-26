@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdint.h>
 
 int int_to_fixed_point (int);
