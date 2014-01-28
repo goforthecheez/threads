@@ -108,34 +108,35 @@ sema_try_down (struct semaphore *sema)
 void
 sema_up (struct semaphore *sema) 
 {
-  enum intr_level old_level;
-
   ASSERT (sema != NULL);
 
-  int max_priority = -1;
+  enum intr_level old_level;
+  int max_pri = -1;
   struct thread *max_pri_t = NULL;
   struct list_elem *e;
 
   old_level = intr_disable ();
   if (!list_empty (&sema->waiters))
     { 
+      // Look for the highest-prioirity waiter and wake it up.
       for (e = list_begin (&sema->waiters); e != list_end (&sema->waiters);
            e = list_next (e))
         {
           struct thread *t = list_entry (e, struct thread, elem);
           int pri = thread_get_priority_helper (t);
-          if (pri > max_priority)
+
+          if (pri > max_pri)
             {
-              max_priority = pri;
+              max_pri = pri;
               max_pri_t = t;
             }
 	}
-
         list_remove (&max_pri_t->elem);
         thread_unblock (max_pri_t);
     }
   sema->value++;
   intr_set_level (old_level);
+
   thread_yield ();
 }
 
@@ -349,30 +350,31 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED)
   ASSERT (!intr_context ());
   ASSERT (lock_held_by_current_thread (lock));
 
-  int max_priority = -1;
+  int max_pri = -1;
   struct semaphore_elem *max_pri_se = NULL;
   struct list_elem *e;
 
-  enum intr_level old_level = intr_disable ();
   if (!list_empty (&cond->waiters))
     { 
+      // Look for the highest priority waiter and wake it up.
       for (e = list_begin (&cond->waiters); e != list_end (&cond->waiters);
            e = list_next (e))
         {
-          struct semaphore_elem *se = list_entry (e, struct semaphore_elem, elem);
-          struct thread *t = list_entry (list_front (&se->semaphore.waiters), struct thread, elem);
+          struct semaphore_elem *se = list_entry (e, struct semaphore_elem,
+                                                  elem);
+          struct thread *t = list_entry (list_front (&se->semaphore.waiters),
+                                         struct thread, elem);
           int pri = thread_get_priority_helper (t);
-          if (pri > max_priority)
+
+          if (pri > max_pri)
             {
-              max_priority = pri;
+              max_pri = pri;
               max_pri_se = se;
             }
 	}
-
-        list_remove (&max_pri_se->elem);
-        sema_up (&max_pri_se->semaphore);
+      list_remove (&max_pri_se->elem);
+      sema_up (&max_pri_se->semaphore);
     }
-  intr_set_level (old_level);
 }
 
 /* Wakes up all threads, if any, waiting on COND (protected by

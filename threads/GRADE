@@ -1,0 +1,881 @@
+TOTAL TESTING SCORE: 68.6%
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+SUMMARY BY TEST SET
+
+Test Set                                      Pts Max  % Ttl  % Max
+--------------------------------------------- --- --- ------ ------
+tests/threads/Rubric.alarm                     18/ 18  20.0%/ 20.0%
+tests/threads/Rubric.priority                  38/ 38  40.0%/ 40.0%
+tests/threads/Rubric.mlfqs                      8/ 37   8.6%/ 40.0%
+--------------------------------------------- --- --- ------ ------
+Total                                                  68.6%/100.0%
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+SUMMARY OF INDIVIDUAL TESTS
+
+Functionality and robustness of alarm clock (tests/threads/Rubric.alarm):
+	     4/ 4 tests/threads/alarm-single
+	     4/ 4 tests/threads/alarm-multiple
+	     4/ 4 tests/threads/alarm-simultaneous
+	     4/ 4 tests/threads/alarm-priority
+
+	     1/ 1 tests/threads/alarm-zero
+	     1/ 1 tests/threads/alarm-negative
+
+	- Section summary.
+	      6/  6 tests passed
+	     18/ 18 points subtotal
+
+Functionality of priority scheduler (tests/threads/Rubric.priority):
+	     3/ 3 tests/threads/priority-change
+	     3/ 3 tests/threads/priority-preempt
+
+	     3/ 3 tests/threads/priority-fifo
+	     3/ 3 tests/threads/priority-sema
+	     3/ 3 tests/threads/priority-condvar
+
+	     3/ 3 tests/threads/priority-donate-one
+	     3/ 3 tests/threads/priority-donate-multiple
+	     3/ 3 tests/threads/priority-donate-multiple2
+	     3/ 3 tests/threads/priority-donate-nest
+	     5/ 5 tests/threads/priority-donate-chain
+	     3/ 3 tests/threads/priority-donate-sema
+	     3/ 3 tests/threads/priority-donate-lower
+
+	- Section summary.
+	     12/ 12 tests passed
+	     38/ 38 points subtotal
+
+Functionality of advanced scheduler (tests/threads/Rubric.mlfqs):
+	  ** 0/ 5 tests/threads/mlfqs-load-1
+	  ** 0/ 5 tests/threads/mlfqs-load-60
+	  ** 0/ 3 tests/threads/mlfqs-load-avg
+
+	  ** 0/ 5 tests/threads/mlfqs-recent-1
+
+	     5/ 5 tests/threads/mlfqs-fair-2
+	     3/ 3 tests/threads/mlfqs-fair-20
+
+	  ** 0/ 4 tests/threads/mlfqs-nice-2
+	  ** 0/ 2 tests/threads/mlfqs-nice-10
+
+	  ** 0/ 5 tests/threads/mlfqs-block
+
+	- Section summary.
+	      2/  9 tests passed
+	      8/ 37 points subtotal
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+DETAILS OF tests/threads/mlfqs-load-1 FAILURE:
+
+Kernel panic in run: PANIC at ../../tests/threads/tests.c:93 in fail(): test failed
+Call stack: 0xc0028a5e
+Translation of call stack:
+0xc0028a5e: debug_panic (.../../lib/kernel/debug.c:38)
+
+OUTPUT FROM tests/threads/mlfqs-load-1:
+
+squish-pty bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -mlfqs run mlfqs-load-1
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-load-1':
+(mlfqs-load-1) begin
+(mlfqs-load-1) spinning for up to 45 seconds, please wait...
+(mlfqs-load-1) FAIL: load average stayed below 0.5 for more than 45 seconds
+Kernel PANIC at ../../tests/threads/tests.c:93 in fail(): test failed
+Call stack: 0xc0028a5e.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 4639 ticks
+Thread: 0 idle ticks, 4639 kernel ticks, 0 user ticks
+Console: 712 characters output
+Keyboard: 0 keys pressed
+Powering off..
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+DETAILS OF tests/threads/mlfqs-load-60 FAILURE:
+
+Some load average values were missing or differed from those expected by more than 3.5.
+  time   actual <-> expected explanation
+------ -------- --- -------- ----------------------------------------
+     2    11.76 >>> 2.95     Too big, by 5.31.
+     4    20.56 >>> 4.84     Too big, by 12.22.
+     6    27.72 >>> 6.66     Too big, by 17.56.
+     8    33.60 >>> 8.42     Too big, by 21.68.
+    10    38.24 >>> 10.13    Too big, by 24.61.
+    12    37.40 >>> 11.78    Too big, by 22.12.
+    14    37.40 >>> 13.37    Too big, by 20.53.
+    16    37.40 >>> 14.91    Too big, by 18.99.
+    18    37.40 >>> 16.40    Too big, by 17.50.
+    20    36.77 >>> 17.84    Too big, by 15.43.
+    22    36.77 >>> 19.24    Too big, by 14.03.
+    24    36.77 >>> 20.58    Too big, by 12.69.
+    26    36.77 >>> 21.89    Too big, by 11.38.
+    28    36.77 >>> 23.15    Too big, by 10.12.
+    30    36.77 >>> 24.37    Too big, by 8.90.
+    32    36.77 >>> 25.54    Too big, by 7.73.
+    34    36.16 >>> 26.68    Too big, by 5.98.
+    36    36.16 >>> 27.78    Too big, by 4.88.
+    38    36.16 >>> 28.85    Too big, by 3.81.
+    40    36.16 >>> 29.88    Too big, by 2.78.
+    42    36.16 >>> 30.87    Too big, by 1.79.
+    44    36.16 >>> 31.84    Too big, by 0.82.
+    46    36.16  =  32.77    
+    48    35.56  =  33.67    
+    50    35.56  =  34.54    
+    52    35.56  =  35.38    
+    54    35.56  =  36.19    
+    56    35.56  =  36.98    
+    58    35.56  =  37.74    
+    60    35.56  =  37.48    
+    62    34.97  =  36.24    
+    64    34.97  =  35.04    
+    66    33.81  =  33.88    
+    68    32.68  =  32.76    
+    70    31.59  =  31.68    
+    72    30.54  =  30.63    
+    74    29.53  =  29.62    
+    76    28.55  =  28.64    
+    78    27.60  =  27.69    
+    80    26.69  =  26.78    
+    82    25.80  =  25.89    
+    84    24.95  =  25.04    
+    86    24.12  =  24.21    
+    88    23.32  =  23.41    
+    90    22.55  =  22.64    
+    92    21.80  =  21.89    
+    94    21.08  =  21.16    
+    96    20.38  =  20.46    
+    98    19.70  =  19.79    
+   100    19.05  =  19.13    
+   102    18.42  =  18.50    
+   104    17.81  =  17.89    
+   106    17.22  =  17.30    
+   108    16.65  =  16.73    
+   110    16.10  =  16.17    
+   112    15.57  =  15.64    
+   114    15.05  =  15.12    
+   116    14.55  =  14.62    
+   118    14.07  =  14.14    
+   120    14.60  =  13.67    
+   122    13.20  =  13.22    
+   124    12.76  =  12.78    
+   126    12.34  =  12.36    
+   128    11.93  =  11.95    
+   130    11.53  =  11.56    
+   132    11.15  =  11.17    
+   134    10.78  =  10.80    
+   136    10.42  =  10.45    
+   138    10.08  =  10.10    
+   140     9.74  =  9.77     
+   142     9.42  =  9.45     
+   144     9.11  =  9.13     
+   146     8.81  =  8.83     
+   148     8.52  =  8.54     
+   150     8.24  =  8.26     
+   152     7.96  =  7.98     
+   154     7.70  =  7.72     
+   156     7.44  =  7.47     
+   158     7.20  =  7.22     
+   160     6.96  =  6.98     
+   162     6.73  =  6.75     
+   164     6.51  =  6.53     
+   166     6.29  =  6.31     
+   168     6.08  =  6.10     
+   170     5.88  =  5.90     
+   172     5.68  =  5.70     
+   174     5.49  =  5.52     
+   176     5.31  =  5.33     
+   178     5.13  =  5.16     
+
+OUTPUT FROM tests/threads/mlfqs-load-60:
+
+squish-pty bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -mlfqs run mlfqs-load-60
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-load-60':
+(mlfqs-load-60) begin
+(mlfqs-load-60) Starting 60 niced load threads...
+(mlfqs-load-60) Starting threads took 2 seconds.
+(mlfqs-load-60) After 0 seconds, load average=1.00.
+(mlfqs-load-60) After 2 seconds, load average=11.76.
+(mlfqs-load-60) After 4 seconds, load average=20.56.
+(mlfqs-load-60) After 6 seconds, load average=27.72.
+(mlfqs-load-60) After 8 seconds, load average=33.60.
+(mlfqs-load-60) After 10 seconds, load average=38.24.
+(mlfqs-load-60) After 12 seconds, load average=37.40.
+(mlfqs-load-60) After 14 seconds, load average=37.40.
+(mlfqs-load-60) After 16 seconds, load average=37.40.
+(mlfqs-load-60) After 18 seconds, load average=37.40.
+(mlfqs-load-60) After 20 seconds, load average=36.77.
+(mlfqs-load-60) After 22 seconds, load average=36.77.
+(mlfqs-load-60) After 24 seconds, load average=36.77.
+(mlfqs-load-60) After 26 seconds, load average=36.77.
+(mlfqs-load-60) After 28 seconds, load average=36.77.
+(mlfqs-load-60) After 30 seconds, load average=36.77.
+(mlfqs-load-60) After 32 seconds, load average=36.77.
+(mlfqs-load-60) After 34 seconds, load average=36.16.
+(mlfqs-load-60) After 36 seconds, load average=36.16.
+(mlfqs-load-60) After 38 seconds, load average=36.16.
+(mlfqs-load-60) After 40 seconds, load average=36.16.
+(mlfqs-load-60) After 42 seconds, load average=36.16.
+(mlfqs-load-60) After 44 seconds, load average=36.16.
+(mlfqs-load-60) After 46 seconds, load average=36.16.
+(mlfqs-load-60) After 48 seconds, load average=35.56.
+(mlfqs-load-60) After 50 seconds, load average=35.56.
+(mlfqs-load-60) After 52 seconds, load average=35.56.
+(mlfqs-load-60) After 54 seconds, load average=35.56.
+(mlfqs-load-60) After 56 seconds, load average=35.56.
+(mlfqs-load-60) After 58 seconds, load average=35.56.
+(mlfqs-load-60) After 60 seconds, load average=35.56.
+(mlfqs-load-60) After 62 seconds, load average=34.97.
+(mlfqs-load-60) After 64 seconds, load average=34.97.
+(mlfqs-load-60) After 66 seconds, load average=33.81.
+(mlfqs-load-60) After 68 seconds, load average=32.68.
+(mlfqs-load-60) After 70 seconds, load average=31.59.
+(mlfqs-load-60) After 72 seconds, load average=30.54.
+(mlfqs-load-60) After 74 seconds, load average=29.53.
+(mlfqs-load-60) After 76 seconds, load average=28.55.
+(mlfqs-load-60) After 78 seconds, load average=27.60.
+(mlfqs-load-60) After 80 seconds, load average=26.69.
+(mlfqs-load-60) After 82 seconds, load average=25.80.
+(mlfqs-load-60) After 84 seconds, load average=24.95.
+(mlfqs-load-60) After 86 seconds, load average=24.12.
+(mlfqs-load-60) After 88 seconds, load average=23.32.
+(mlfqs-load-60) After 90 seconds, load average=22.55.
+(mlfqs-load-60) After 92 seconds, load average=21.80.
+(mlfqs-load-60) After 94 seconds, load average=21.08.
+(mlfqs-load-60) After 96 seconds, load average=20.38.
+(mlfqs-load-60) After 98 seconds, load average=19.70.
+(mlfqs-load-60) After 100 seconds, load average=19.05.
+(mlfqs-load-60) After 102 seconds, load average=18.42.
+(mlfqs-load-60) After 104 seconds, load average=17.81.
+(mlfqs-load-60) After 106 seconds, load average=17.22.
+(mlfqs-load-60) After 108 seconds, load average=16.65.
+(mlfqs-load-60) After 110 seconds, load average=16.10.
+(mlfqs-load-60) After 112 seconds, load average=15.57.
+(mlfqs-load-60) After 114 seconds, load average=15.05.
+(mlfqs-load-60) After 116 seconds, load average=14.55.
+(mlfqs-load-60) After 118 seconds, load average=14.07.
+(mlfqs-load-60) After 120 seconds, load average=14.60.
+(mlfqs-load-60) After 122 seconds, load average=13.20.
+(mlfqs-load-60) After 124 seconds, load average=12.76.
+(mlfqs-load-60) After 126 seconds, load average=12.34.
+(mlfqs-load-60) After 128 seconds, load average=11.93.
+(mlfqs-load-60) After 130 seconds, load average=11.53.
+(mlfqs-load-60) After 132 seconds, load average=11.15.
+(mlfqs-load-60) After 134 seconds, load average=10.78.
+(mlfqs-load-60) After 136 seconds, load average=10.42.
+(mlfqs-load-60) After 138 seconds, load average=10.08.
+(mlfqs-load-60) After 140 seconds, load average=9.74.
+(mlfqs-load-60) After 142 seconds, load average=9.42.
+(mlfqs-load-60) After 144 seconds, load average=9.11.
+(mlfqs-load-60) After 146 seconds, load average=8.81.
+(mlfqs-load-60) After 148 seconds, load average=8.52.
+(mlfqs-load-60) After 150 seconds, load average=8.24.
+(mlfqs-load-60) After 152 seconds, load average=7.96.
+(mlfqs-load-60) After 154 seconds, load average=7.70.
+(mlfqs-load-60) After 156 seconds, load average=7.44.
+(mlfqs-load-60) After 158 seconds, load average=7.20.
+(mlfqs-load-60) After 160 seconds, load average=6.96.
+(mlfqs-load-60) After 162 seconds, load average=6.73.
+(mlfqs-load-60) After 164 seconds, load average=6.51.
+(mlfqs-load-60) After 166 seconds, load average=6.29.
+(mlfqs-load-60) After 168 seconds, load average=6.08.
+(mlfqs-load-60) After 170 seconds, load average=5.88.
+(mlfqs-load-60) After 172 seconds, load average=5.68.
+(mlfqs-load-60) After 174 seconds, load average=5.49.
+(mlfqs-load-60) After 176 seconds, load average=5.31.
+(mlfqs-load-60) After 178 seconds, load average=5.13.
+(mlfqs-load-60) end
+Execution of 'mlfqs-load-60' complete.
+Timer: 18839 ticks
+Thread: 11574 idle ticks, 7268 kernel ticks, 0 user ticks
+Console: 5367 characters output
+Keyboard: 0 keys pressed
+Powering off...
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+DETAILS OF tests/threads/mlfqs-load-avg FAILURE:
+
+Some load average values were missing or differed from those expected by more than 2.5.
+  time   actual <-> expected explanation
+------ -------- --- -------- ----------------------------------------
+     2     0.07  =  0.05     
+     4     0.18  =  0.16     
+     6     0.37  =  0.34     
+     8     0.62  =  0.58     
+    10     0.95  =  0.87     
+    12     1.52  =  1.22     
+    14     2.23  =  1.63     
+    16     3.07  =  2.09     
+    18     4.67  =  2.60     
+    20     6.57 >>> 3.16     Too big, by 0.91.
+    22     9.62 >>> 3.76     Too big, by 3.36.
+    24    13.63 >>> 4.42     Too big, by 6.71.
+    26    19.34 >>> 5.11     Too big, by 11.73.
+    28    25.78 >>> 5.85     Too big, by 17.43.
+    30    29.43 >>> 6.63     Too big, by 20.30.
+    32    30.72 >>> 7.46     Too big, by 20.76.
+    34    30.89 >>> 8.32     Too big, by 20.07.
+    36    30.50 >>> 9.22     Too big, by 18.78.
+    38    29.74 >>> 10.15    Too big, by 17.09.
+    40    29.10 >>> 11.12    Too big, by 15.48.
+    42    28.35 >>> 12.13    Too big, by 13.72.
+    44    27.51 >>> 13.16    Too big, by 11.85.
+    46    27.22 >>> 14.23    Too big, by 10.49.
+    48    26.88 >>> 15.33    Too big, by 9.05.
+    50    26.19 >>> 16.46    Too big, by 7.23.
+    52    26.17 >>> 17.62    Too big, by 6.05.
+    54    25.80 >>> 18.81    Too big, by 4.49.
+    56    25.42 >>> 20.02    Too big, by 2.90.
+    58    25.42 >>> 21.26    Too big, by 1.66.
+    60    25.03  =  22.52    
+    62    25.03  =  23.71    
+    64    24.64  =  24.80    
+    66    24.63  =  25.78    
+    68    24.63  =  26.66    
+    70    24.63 <<< 27.45    Too small, by 0.32.
+    72    24.23 <<< 28.14    Too small, by 1.41.
+    74    24.22 <<< 28.75    Too small, by 2.03.
+    76    24.22 <<< 29.27    Too small, by 2.55.
+    78    24.22 <<< 29.71    Too small, by 2.99.
+    80    24.22 <<< 30.06    Too small, by 3.34.
+    82    24.22 <<< 30.34    Too small, by 3.62.
+    84    24.22 <<< 30.55    Too small, by 3.83.
+    86    24.22 <<< 30.68    Too small, by 3.96.
+    88    24.22 <<< 30.74    Too small, by 4.02.
+    90    24.22 <<< 30.73    Too small, by 4.01.
+    92    24.22 <<< 30.66    Too small, by 3.94.
+    94    24.22 <<< 30.52    Too small, by 3.80.
+    96    23.81 <<< 30.32    Too small, by 4.01.
+    98    23.81 <<< 30.06    Too small, by 3.75.
+   100    23.81 <<< 29.74    Too small, by 3.43.
+   102    23.81 <<< 29.37    Too small, by 3.06.
+   104    23.81 <<< 28.95    Too small, by 2.64.
+   106    23.81 <<< 28.47    Too small, by 2.16.
+   108    23.81 <<< 27.94    Too small, by 1.63.
+   110    23.81 <<< 27.36    Too small, by 1.05.
+   112    23.81 <<< 26.74    Too small, by 0.43.
+   114    23.81  =  26.07    
+   116    23.81  =  25.36    
+   118    23.81  =  24.60    
+   120    23.81  =  23.81    
+   122    23.02  =  23.02    
+   124    22.25  =  22.26    
+   126    21.51  =  21.52    
+   128    20.80  =  20.81    
+   130    20.11  =  20.12    
+   132    19.44  =  19.46    
+   134    18.79  =  18.81    
+   136    18.17  =  18.19    
+   138    17.57  =  17.59    
+   140    16.99  =  17.01    
+   142    16.43  =  16.45    
+   144    15.89  =  15.90    
+   146    15.36  =  15.38    
+   148    14.85  =  14.87    
+   150    14.36  =  14.38    
+   152    13.88  =  13.90    
+   154    13.42  =  13.44    
+   156    12.98  =  13.00    
+   158    12.55  =  12.57    
+   160    12.13  =  12.15    
+   162    11.73  =  11.75    
+   164    11.34  =  11.36    
+   166    10.96  =  10.99    
+   168    10.60  =  10.62    
+   170    10.25  =  10.27    
+   172     9.91  =  9.93     
+   174     9.58  =  9.61     
+   176     9.26  =  9.29     
+   178     8.96  =  8.98     
+
+OUTPUT FROM tests/threads/mlfqs-load-avg:
+
+squish-pty bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -mlfqs run mlfqs-load-avg
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-load-avg':
+(mlfqs-load-avg) begin
+(mlfqs-load-avg) Starting 60 load threads...
+(mlfqs-load-avg) Starting threads took 2 seconds.
+(mlfqs-load-avg) After 0 seconds, load average=0.02.
+(mlfqs-load-avg) After 2 seconds, load average=0.07.
+(mlfqs-load-avg) After 4 seconds, load average=0.18.
+(mlfqs-load-avg) After 6 seconds, load average=0.37.
+(mlfqs-load-avg) After 8 seconds, load average=0.62.
+(mlfqs-load-avg) After 10 seconds, load average=0.95.
+(mlfqs-load-avg) After 12 seconds, load average=1.52.
+(mlfqs-load-avg) After 14 seconds, load average=2.23.
+(mlfqs-load-avg) After 16 seconds, load average=3.07.
+(mlfqs-load-avg) After 18 seconds, load average=4.67.
+(mlfqs-load-avg) After 20 seconds, load average=6.57.
+(mlfqs-load-avg) After 22 seconds, load average=9.62.
+(mlfqs-load-avg) After 24 seconds, load average=13.63.
+(mlfqs-load-avg) After 26 seconds, load average=19.34.
+(mlfqs-load-avg) After 28 seconds, load average=25.78.
+(mlfqs-load-avg) After 30 seconds, load average=29.43.
+(mlfqs-load-avg) After 32 seconds, load average=30.72.
+(mlfqs-load-avg) After 34 seconds, load average=30.89.
+(mlfqs-load-avg) After 36 seconds, load average=30.50.
+(mlfqs-load-avg) After 38 seconds, load average=29.74.
+(mlfqs-load-avg) After 40 seconds, load average=29.10.
+(mlfqs-load-avg) After 42 seconds, load average=28.35.
+(mlfqs-load-avg) After 44 seconds, load average=27.51.
+(mlfqs-load-avg) After 46 seconds, load average=27.22.
+(mlfqs-load-avg) After 48 seconds, load average=26.88.
+(mlfqs-load-avg) After 50 seconds, load average=26.19.
+(mlfqs-load-avg) After 52 seconds, load average=26.17.
+(mlfqs-load-avg) After 54 seconds, load average=25.80.
+(mlfqs-load-avg) After 56 seconds, load average=25.42.
+(mlfqs-load-avg) After 58 seconds, load average=25.42.
+(mlfqs-load-avg) After 60 seconds, load average=25.03.
+(mlfqs-load-avg) After 62 seconds, load average=25.03.
+(mlfqs-load-avg) After 64 seconds, load average=24.64.
+(mlfqs-load-avg) After 66 seconds, load average=24.63.
+(mlfqs-load-avg) After 68 seconds, load average=24.63.
+(mlfqs-load-avg) After 70 seconds, load average=24.63.
+(mlfqs-load-avg) After 72 seconds, load average=24.23.
+(mlfqs-load-avg) After 74 seconds, load average=24.22.
+(mlfqs-load-avg) After 76 seconds, load average=24.22.
+(mlfqs-load-avg) After 78 seconds, load average=24.22.
+(mlfqs-load-avg) After 80 seconds, load average=24.22.
+(mlfqs-load-avg) After 82 seconds, load average=24.22.
+(mlfqs-load-avg) After 84 seconds, load average=24.22.
+(mlfqs-load-avg) After 86 seconds, load average=24.22.
+(mlfqs-load-avg) After 88 seconds, load average=24.22.
+(mlfqs-load-avg) After 90 seconds, load average=24.22.
+(mlfqs-load-avg) After 92 seconds, load average=24.22.
+(mlfqs-load-avg) After 94 seconds, load average=24.22.
+(mlfqs-load-avg) After 96 seconds, load average=23.81.
+(mlfqs-load-avg) After 98 seconds, load average=23.81.
+(mlfqs-load-avg) After 100 seconds, load average=23.81.
+(mlfqs-load-avg) After 102 seconds, load average=23.81.
+(mlfqs-load-avg) After 104 seconds, load average=23.81.
+(mlfqs-load-avg) After 106 seconds, load average=23.81.
+(mlfqs-load-avg) After 108 seconds, load average=23.81.
+(mlfqs-load-avg) After 110 seconds, load average=23.81.
+(mlfqs-load-avg) After 112 seconds, load average=23.81.
+(mlfqs-load-avg) After 114 seconds, load average=23.81.
+(mlfqs-load-avg) After 116 seconds, load average=23.81.
+(mlfqs-load-avg) After 118 seconds, load average=23.81.
+(mlfqs-load-avg) After 120 seconds, load average=23.81.
+(mlfqs-load-avg) After 122 seconds, load average=23.02.
+(mlfqs-load-avg) After 124 seconds, load average=22.25.
+(mlfqs-load-avg) After 126 seconds, load average=21.51.
+(mlfqs-load-avg) After 128 seconds, load average=20.80.
+(mlfqs-load-avg) After 130 seconds, load average=20.11.
+(mlfqs-load-avg) After 132 seconds, load average=19.44.
+(mlfqs-load-avg) After 134 seconds, load average=18.79.
+(mlfqs-load-avg) After 136 seconds, load average=18.17.
+(mlfqs-load-avg) After 138 seconds, load average=17.57.
+(mlfqs-load-avg) After 140 seconds, load average=16.99.
+(mlfqs-load-avg) After 142 seconds, load average=16.43.
+(mlfqs-load-avg) After 144 seconds, load average=15.89.
+(mlfqs-load-avg) After 146 seconds, load average=15.36.
+(mlfqs-load-avg) After 148 seconds, load average=14.85.
+(mlfqs-load-avg) After 150 seconds, load average=14.36.
+(mlfqs-load-avg) After 152 seconds, load average=13.88.
+(mlfqs-load-avg) After 154 seconds, load average=13.42.
+(mlfqs-load-avg) After 156 seconds, load average=12.98.
+(mlfqs-load-avg) After 158 seconds, load average=12.55.
+(mlfqs-load-avg) After 160 seconds, load average=12.13.
+(mlfqs-load-avg) After 162 seconds, load average=11.73.
+(mlfqs-load-avg) After 164 seconds, load average=11.34.
+(mlfqs-load-avg) After 166 seconds, load average=10.96.
+(mlfqs-load-avg) After 168 seconds, load average=10.60.
+(mlfqs-load-avg) After 170 seconds, load average=10.25.
+(mlfqs-load-avg) After 172 seconds, load average=9.91.
+(mlfqs-load-avg) After 174 seconds, load average=9.58.
+(mlfqs-load-avg) After 176 seconds, load average=9.26.
+(mlfqs-load-avg) After 178 seconds, load average=8.96.
+(mlfqs-load-avg) end
+Execution of 'mlfqs-load-avg' complete.
+Timer: 18840 ticks
+Thread: 6343 idle ticks, 12499 kernel ticks, 0 user ticks
+Console: 5463 characters output
+Keyboard: 0 keys pressed
+Powering off...
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+DETAILS OF tests/threads/mlfqs-recent-1 FAILURE:
+
+Some recent_cpu values were missing or differed from those expected by more than 2.5.
+  time   actual <-> expected explanation
+------ -------- --- -------- ----------------------------------------
+     2     0.00 <<< 6.40     Too small, by 3.90.
+     4     0.00 <<< 12.60    Too small, by 10.10.
+     6     0.00 <<< 18.61    Too small, by 16.11.
+     8     0.00 <<< 24.44    Too small, by 21.94.
+    10     0.00 <<< 30.08    Too small, by 27.58.
+    12     0.00 <<< 35.54    Too small, by 33.04.
+    14     0.00 <<< 40.83    Too small, by 38.33.
+    16     0.00 <<< 45.96    Too small, by 43.46.
+    18     0.00 <<< 50.92    Too small, by 48.42.
+    20     0.00 <<< 55.73    Too small, by 53.23.
+    22     0.00 <<< 60.39    Too small, by 57.89.
+    24     0.00 <<< 64.90    Too small, by 62.40.
+    26     0.00 <<< 69.27    Too small, by 66.77.
+    28     0.00 <<< 73.50    Too small, by 71.00.
+    30     0.00 <<< 77.60    Too small, by 75.10.
+    32     0.00 <<< 81.56    Too small, by 79.06.
+    34     0.00 <<< 85.40    Too small, by 82.90.
+    36     0.00 <<< 89.12    Too small, by 86.62.
+    38     0.00 <<< 92.72    Too small, by 90.22.
+    40     0.00 <<< 96.20    Too small, by 93.70.
+    42     0.00 <<< 99.57    Too small, by 97.07.
+    44     0.00 <<< 102.84   Too small, by 100.34.
+    46     0.00 <<< 106.00   Too small, by 103.50.
+    48     0.00 <<< 109.06   Too small, by 106.56.
+    50     0.00 <<< 112.02   Too small, by 109.52.
+    52     0.00 <<< 114.89   Too small, by 112.39.
+    54     0.00 <<< 117.66   Too small, by 115.16.
+    56     0.00 <<< 120.34   Too small, by 117.84.
+    58     0.00 <<< 122.94   Too small, by 120.44.
+    60     0.00 <<< 125.46   Too small, by 122.96.
+    62     0.00 <<< 127.89   Too small, by 125.39.
+    64     0.00 <<< 130.25   Too small, by 127.75.
+    66     0.00 <<< 132.53   Too small, by 130.03.
+    68     0.00 <<< 134.73   Too small, by 132.23.
+    70     0.00 <<< 136.86   Too small, by 134.36.
+    72     0.00 <<< 138.93   Too small, by 136.43.
+    74     0.00 <<< 140.93   Too small, by 138.43.
+    76     0.00 <<< 142.86   Too small, by 140.36.
+    78     0.00 <<< 144.73   Too small, by 142.23.
+    80     0.00 <<< 146.54   Too small, by 144.04.
+    82     0.00 <<< 148.29   Too small, by 145.79.
+    84     0.00 <<< 149.99   Too small, by 147.49.
+    86     0.00 <<< 151.63   Too small, by 149.13.
+    88     0.00 <<< 153.21   Too small, by 150.71.
+    90     0.00 <<< 154.75   Too small, by 152.25.
+    92     0.00 <<< 156.23   Too small, by 153.73.
+    94     0.00 <<< 157.67   Too small, by 155.17.
+    96     0.00 <<< 159.06   Too small, by 156.56.
+    98     0.00 <<< 160.40   Too small, by 157.90.
+   100     0.00 <<< 161.70   Too small, by 159.20.
+   102     0.00 <<< 162.96   Too small, by 160.46.
+   104     0.00 <<< 164.18   Too small, by 161.68.
+   106     0.00 <<< 165.35   Too small, by 162.85.
+   108     0.00 <<< 166.49   Too small, by 163.99.
+   110     0.00 <<< 167.59   Too small, by 165.09.
+   112     0.00 <<< 168.66   Too small, by 166.16.
+   114     0.00 <<< 169.69   Too small, by 167.19.
+   116     0.00 <<< 170.69   Too small, by 168.19.
+   118     0.00 <<< 171.65   Too small, by 169.15.
+   120     0.00 <<< 172.58   Too small, by 170.08.
+   122     0.00 <<< 173.49   Too small, by 170.99.
+   124     0.00 <<< 174.36   Too small, by 171.86.
+   126     0.00 <<< 175.20   Too small, by 172.70.
+   128     0.00 <<< 176.02   Too small, by 173.52.
+   130     0.00 <<< 176.81   Too small, by 174.31.
+   132     0.00 <<< 177.57   Too small, by 175.07.
+   134     0.00 <<< 178.31   Too small, by 175.81.
+   136     0.00 <<< 179.02   Too small, by 176.52.
+   138     0.00 <<< 179.72   Too small, by 177.22.
+   140     0.00 <<< 180.38   Too small, by 177.88.
+   142     0.00 <<< 181.03   Too small, by 178.53.
+   144     0.00 <<< 181.65   Too small, by 179.15.
+   146     0.00 <<< 182.26   Too small, by 179.76.
+   148     0.00 <<< 182.84   Too small, by 180.34.
+   150     0.00 <<< 183.41   Too small, by 180.91.
+   152     0.00 <<< 183.96   Too small, by 181.46.
+   154     0.00 <<< 184.49   Too small, by 181.99.
+   156     0.00 <<< 185.00   Too small, by 182.50.
+   158     0.00 <<< 185.49   Too small, by 182.99.
+   160     0.00 <<< 185.97   Too small, by 183.47.
+   162     0.00 <<< 186.43   Too small, by 183.93.
+   164     0.00 <<< 186.88   Too small, by 184.38.
+   166     0.00 <<< 187.31   Too small, by 184.81.
+   168     0.00 <<< 187.73   Too small, by 185.23.
+   170     0.00 <<< 188.14   Too small, by 185.64.
+   172     0.00 <<< 188.53   Too small, by 186.03.
+   174     0.00 <<< 188.91   Too small, by 186.41.
+   176     0.00 <<< 189.27   Too small, by 186.77.
+   178     0.00 <<< 189.63   Too small, by 187.13.
+
+OUTPUT FROM tests/threads/mlfqs-recent-1:
+
+squish-pty bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -mlfqs run mlfqs-recent-1
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-recent-1':
+(mlfqs-recent-1) begin
+(mlfqs-recent-1) Sleeping 10 seconds to allow recent_cpu to decay, please wait...
+(mlfqs-recent-1) After 2 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 4 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 6 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 8 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 10 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 12 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 14 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 16 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 18 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 20 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 22 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 24 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 26 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 28 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 30 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 32 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 34 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 36 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 38 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 40 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 42 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 44 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 46 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 48 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 50 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 52 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 54 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 56 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 58 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 60 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 62 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 64 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 66 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 68 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 70 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 72 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 74 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 76 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 78 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 80 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 82 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 84 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 86 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 88 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 90 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 92 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 94 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 96 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 98 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 100 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 102 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 104 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 106 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 108 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 110 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 112 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 114 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 116 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 118 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 120 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 122 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 124 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 126 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 128 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 130 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 132 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 134 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 136 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 138 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 140 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 142 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 144 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 146 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 148 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 150 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 152 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 154 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 156 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 158 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 160 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 162 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 164 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 166 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 168 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 170 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 172 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 174 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 176 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 178 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) After 180 seconds, recent_cpu is 0.00, load_avg is 0.00.
+(mlfqs-recent-1) end
+Execution of 'mlfqs-recent-1' complete.
+Timer: 19016 ticks
+Thread: 966 idle ticks, 18053 kernel ticks, 0 user ticks
+Console: 7087 characters output
+Keyboard: 0 keys pressed
+Powering off...
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+DETAILS OF tests/threads/mlfqs-nice-2 FAILURE:
+
+Some tick counts were missing or differed from those expected by more than 50.
+thread   actual <-> expected explanation
+------ -------- --- -------- ----------------------------------------
+     0     1500 <<< 1904     Too small, by 354.
+     1     1500 >>> 1096     Too big, by 354.
+
+OUTPUT FROM tests/threads/mlfqs-nice-2:
+
+squish-pty bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -mlfqs run mlfqs-nice-2
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-nice-2':
+(mlfqs-nice-2) begin
+(mlfqs-nice-2) Starting 2 threads...
+(mlfqs-nice-2) Starting threads took 9 ticks.
+(mlfqs-nice-2) Sleeping 40 seconds to let threads run, please wait...
+(mlfqs-nice-2) Thread 0 received 1500 ticks.
+(mlfqs-nice-2) Thread 1 received 1500 ticks.
+(mlfqs-nice-2) end
+Execution of 'mlfqs-nice-2' complete.
+Timer: 4064 ticks
+Thread: 998 idle ticks, 3069 kernel ticks, 0 user ticks
+Console: 629 characters output
+Keyboard: 0 keys pressed
+Powering off...
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+DETAILS OF tests/threads/mlfqs-nice-10 FAILURE:
+
+Some tick counts were missing or differed from those expected by more than 25.
+thread   actual <-> expected explanation
+------ -------- --- -------- ----------------------------------------
+     0      300 <<< 672      Too small, by 347.
+     1      301 <<< 588      Too small, by 262.
+     2      301 <<< 492      Too small, by 166.
+     3      300 <<< 408      Too small, by 83.
+     4      300  =  316      
+     5      300 >>> 232      Too big, by 43.
+     6      300 >>> 152      Too big, by 123.
+     7      300 >>> 92       Too big, by 183.
+     8      301 >>> 40       Too big, by 236.
+     9      301 >>> 8        Too big, by 268.
+
+OUTPUT FROM tests/threads/mlfqs-nice-10:
+
+squish-pty bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -mlfqs run mlfqs-nice-10
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-nice-10':
+(mlfqs-nice-10) begin
+(mlfqs-nice-10) Starting 10 threads...
+(mlfqs-nice-10) Starting threads took 29 ticks.
+(mlfqs-nice-10) Sleeping 40 seconds to let threads run, please wait...
+(mlfqs-nice-10) Thread 0 received 300 ticks.
+(mlfqs-nice-10) Thread 1 received 301 ticks.
+(mlfqs-nice-10) Thread 2 received 301 ticks.
+(mlfqs-nice-10) Thread 3 received 300 ticks.
+(mlfqs-nice-10) Thread 4 received 300 ticks.
+(mlfqs-nice-10) Thread 5 received 300 ticks.
+(mlfqs-nice-10) Thread 6 received 300 ticks.
+(mlfqs-nice-10) Thread 7 received 300 ticks.
+(mlfqs-nice-10) Thread 8 received 301 ticks.
+(mlfqs-nice-10) Thread 9 received 301 ticks.
+(mlfqs-nice-10) end
+Execution of 'mlfqs-nice-10' complete.
+Timer: 4127 ticks
+Thread: 985 idle ticks, 3145 kernel ticks, 0 user ticks
+Console: 999 characters output
+Keyboard: 0 keys pressed
+Powering off...
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+DETAILS OF tests/threads/mlfqs-block FAILURE:
+
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mlfqs-block) begin
+  (mlfqs-block) Main thread acquiring lock.
+  (mlfqs-block) Main thread creating block thread, sleeping 25 seconds...
+  (mlfqs-block) Block thread spinning for 20 seconds...
+  (mlfqs-block) Block thread acquiring lock...
+  (mlfqs-block) Main thread spinning for 5 seconds...
+  (mlfqs-block) Main thread releasing lock.
+  (mlfqs-block) ...got it.
+  (mlfqs-block) Block thread should have already acquired lock.
+  (mlfqs-block) end
+Differences in `diff -u' format:
+  (mlfqs-block) begin
+  (mlfqs-block) Main thread acquiring lock.
+  (mlfqs-block) Main thread creating block thread, sleeping 25 seconds...
+  (mlfqs-block) Block thread spinning for 20 seconds...
+  (mlfqs-block) Block thread acquiring lock...
+  (mlfqs-block) Main thread spinning for 5 seconds...
+  (mlfqs-block) Main thread releasing lock.
+- (mlfqs-block) ...got it.
+- (mlfqs-block) Block thread should have already acquired lock.
++ (mlfqs-block) (mlfqs-block) ...got it.Block thread should have already acquired lock.
++ 
+  (mlfqs-block) end
+
+OUTPUT FROM tests/threads/mlfqs-block:
+
+squish-pty bochs -q
+PiLo hda1
+Loading..........
+Kernel command line: -q -mlfqs run mlfqs-block
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  204,600 loops/s.
+Boot complete.
+Executing 'mlfqs-block':
+(mlfqs-block) begin
+(mlfqs-block) Main thread acquiring lock.
+(mlfqs-block) Main thread creating block thread, sleeping 25 seconds...
+(mlfqs-block) Block thread spinning for 20 seconds...
+(mlfqs-block) Block thread acquiring lock...
+(mlfqs-block) Main thread spinning for 5 seconds...
+(mlfqs-block) Main thread releasing lock.
+(mlfqs-block) (mlfqs-block) ...got it.Block thread should have already acquired lock.
+
+(mlfqs-block) end
+Execution of 'mlfqs-block' complete.
+Timer: 3070 ticks
+Thread: 490 idle ticks, 2583 kernel ticks, 0 user ticks
+Console: 775 characters output
+Keyboard: 0 keys pressed
+Powering off...

@@ -91,7 +91,8 @@ struct thread
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
     int64_t wake_up_time;               /* Past this time, wake up. */
-    int my_nice;                        /* Thread's nice value. */
+    int nice;                           /* Nice value. */
+    int recent_cpu;                     /* Recent CPU usage (fixed-point #). */
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
@@ -134,6 +135,7 @@ void thread_yield (void);
 typedef void thread_action_func (struct thread *t, void *aux);
 void thread_foreach (thread_action_func *, void *);
 
+int thread_get_priority_helper (struct thread *t);
 int thread_get_priority (void);
 void thread_set_priority (int);
 
@@ -141,7 +143,5 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
-
-int thread_get_priority_helper (struct thread *t);
 
 #endif /* threads/thread.h */
